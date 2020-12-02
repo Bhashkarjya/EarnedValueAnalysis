@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<head>
+
+    <meta charset="windows-1252">
+    <meta name="viewport" content="width-device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./earned_value.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script type="text/javascript">
+
+        function calc()
+        {
+            // event.preventDefault();
+            let bcws=parseInt(document.getElementById('bcws').value);            
+            let bcwp=parseInt(document.getElementById('bcwp').value);            
+            let acwp=parseInt(document.getElementById('acwp').value);            
+            let eac=parseInt(document.getElementById('eac').value);
+            let bac=parseInt(document.getElementById('bac').value);
+
+            if(bcwp<0 || bcws<0 || acwp<0 || eac<0 || bac<0)
+            {
+                alert("Sorry!! the given inputs are invalid.The input cannot be negative.");
+                return;
+            }
+            if(bac < bcws) 
+            {
+                alert("Sorry!! the given inputs are invalid.The work for whole task cannot be than the schedeuled." );
+                return;
+            }
+            if(bcwp === 0 || acwp === 0)
+            {
+                alert("Sorry!! the given inputs are invalid.The work performed is 0 means the work is not started yet.");
+                return;
+            }      
+            if(bcws === 0)
+            {
+                alert("Sorry!! the given inputs are invalid.The work scheduled cost cannot be 0 for a project.");
+                return;
+            }
+            if(bac === 0 || eac===0)
+            {
+                alert("Sorry!! the given inputs are invalid.The estimated or expected budget at completion cannot be 0.");
+                return;
+            }
+            let cv=bcwp-acwp;
+            let sv=bcwp-bcws;
+
+            document.getElementById('cv').value=cv;
+            let n2=(cv*100)/bcwp;
+            document.getElementById('cv_in_percentage').value=n2.toFixed(2);
+
+            if(cv < 0)
+            {
+                document.getElementById("cv_status").value="Cost overrun";
+            }
+            else if( cv > 0)
+            {
+                document.getElementById('cv_status').value="Cost underrun";
+            }
+            else if( cv == 0)
+            {
+                document.getElementById('cv_status').value="Costing expectedly";
+            }
+
+            document.getElementById('sv').value=sv;
+            let n5=(sv*100)/bcws;
+            document.getElementById('sv_in_percentage').value=n5.toFixed(2);
+            
+            if( sv < 0)
+            {   
+                document.getElementById('sv_status').value="Behind schedule";
+            }
+            else if( sv > 0)
+            {
+                document.getElementById('sv_status').value="Ahead schedule";
+            }
+            else if( sv == 0)
+            {
+                document.getElementById('sv_status').value="Running expectedly.";
+            }
+            let n7=(bcwp/acwp);
+            let n8=(bcwp/bcws);
+            let n9=bac-eac;
+            document.getElementById('cpi').value=n7.toFixed(2);
+            document.getElementById('spi').value=n8.toFixed(2);
+            document.getElementById('vac').value=n9.toFixed(2);
+        }
+
+    </script>
+    <title>
+        Earned Value Analysis
+    </title>
+</head>
+<body>
+
+    <div class="row">
+        <div class="col-sm-5">
+        </div>
+        <div class="col-sm-4">
+            <h1>Earned Value Analysis</h1>                
+        </div>
+        <div class="col-sm-4">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-4">
+          <div class="card text-white bg-dark mb-3">
+            <div class="card-body">
+              <h5 class="card-title">Enter the value for Budgeted Cost for Work Scheduled</h5>
+              <input type="text" id="bcws"/>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="card text-white bg-dark mb-3">
+            <div class="card-body">
+              <h5 class="card-title">Enter the value for Budgeted Cost for Work Performed</h5>
+              <input type="text" id="bcwp"/>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="card text-white bg-dark mb-3">
+              <div class="card-body">
+                <h5 class="card-title">Enter the value for Actual Cost for Work Performed</h5>
+                <input type="text" id="acwp"/>
+              </div>
+            </div>
+          </div>
+      </div>
+      <br>
+
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="card text-white bg-secondary mb-3">
+            <div class="card-body">
+              <h5 class="card-title">Enter the value for Budget Estimated at Completion</h5>
+              <input type="text" id="eac"/>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="card text-white bg-secondary mb-3">
+            <div class="card-body">
+              <h5 class="card-title">Enter the value for Budget at Completion</h5>
+              <input type="text" id="bac"/>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <br>
+
+      <div class="row">
+        <div class="col-sm-5">
+        </div>
+        <div class="col-sm-4">
+                <button type="button" onclick="calc()">Do Earned Value Analysis</button>
+        </div>
+        <div class="col-sm-4">
+        </div>
+      </div>
+      <br>
+
+      <div class="row">
+        <div class="col-sm-4">
+          <div class="card text-white bg-dark mb-3">
+            <div class="card-body">
+              <h5 class="card-title">The cost variance for the project is</h5>
+              <input type="text" id="cv"/>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="card text-white bg-dark mb-3">
+            <div class="card-body">
+              <h5 class="card-title">The cost variance for the project in pecentage is</h5>
+              <input type="text" id="cv_in_percentage"/>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="card text-white bg-dark mb-3">
+              <div class="card-body">
+                <h5 class="card-title">Status of Project Cost</h5>
+                <input type="text" id="cv_status"/>
+              </div>
+            </div>
+          </div>
+      </div>
+      <br>
+
+      <div class="row">
+        <div class="col-sm-4">
+          <div class="card text-white bg-secondary mb-3">
+            <div class="card-body">
+              <h5 class="card-title">The Scheduled variance for the project is</h5>
+              <input type="text" id="sv"/>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="card text-white bg-secondary mb-3">
+            <div class="card-body">
+              <h5 class="card-title">The Scheduled variance for the project in percentage is</h5>
+              <input type="text" id="sv_in_percentage"/>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="card text-white bg-secondary mb-3">
+              <div class="card-body">
+                <h5 class="card-title">Status of Project schedule</h5>
+                <input type="text" id="sv_status"/>
+              </div>
+            </div>
+          </div>
+      </div>
+      <br>
+
+      <div class="row">
+        <div class="col-sm-4">
+          <div class="card text-white bg-dark mb-3">
+            <div class="card-body">
+              <h5 class="card-title">Cost Performance Index</h5>
+              <input type="text" id="cpi"/>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="card text-white bg-dark mb-3">
+            <div class="card-body">
+              <h5 class="card-title">Scheduled Performance Index</h5>
+              <input type="text" id="spi"/>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="card text-white bg-dark mb-3">
+              <div class="card-body">
+                <h5 class="card-title">Variance at Completion</h5>
+                <input type="text" id="vac"/>
+              </div>
+            </div>
+          </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-4">
+        </div>
+        <div class="col-sm-4">
+        </div>
+        <div class="col-sm-4">
+                <h3>Made By</h3>
+                <h5>Bhashkarjya Nath</h5>
+        </div>
+      </div>
+ 
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+</html>
